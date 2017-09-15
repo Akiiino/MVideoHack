@@ -23,8 +23,8 @@ test_file = 'test_split.csv'
 
 def read_file(filename):
     data = pd.read_csv(filename)
-    pos_comments = [i for i in data["commentPositive"].fillna("")]
-    neg_comments = [i for i in data["commentNegative"].fillna("")]
+    pos_comments = data["commentPositive"].fillna("")
+    neg_comments = data["commentNegative"].fillna("")
     comments = data["comment"]
     labels = [(float(i) - 1) / 4 for i in data["reting"]]
     return comments, pos_comments, neg_comments, np.stack(labels)
@@ -54,8 +54,6 @@ s = tokenizer.texts_to_sequences(nX_test)
 nX_test = pad_sequences(s, maxlen=words)
 
 embedding_layer = Embedding(len(word_index) + 1, 50, input_length=words)
-pos_embedding_layer = Embedding(len(word_index) + 1, 50, input_length=words)
-neg_embedding_layer = Embedding(len(word_index) + 1, 50, input_length=words)
 
 sequence_input = Input(shape=(words, ), dtype='float32')
 embedded_sequences = embedding_layer(sequence_input)
@@ -77,7 +75,7 @@ x = MaxPooling1D(4)(x)
 x = Conv1D(256, 4, activation='relu', padding='same')(x)
 x = Flatten()(x)
 x = Dropout(0.9)(x)
-x = Dense(32, activation='relu')(x)
+x = Dense(64, activation='relu')(x)
 x = Dense(1, activation='sigmoid')(x)
 
 model = Model(inputs=[sequence_input, pos_sequence_input, neg_sequence_input], outputs=x)
