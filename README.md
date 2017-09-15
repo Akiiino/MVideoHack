@@ -1,4 +1,7 @@
 # MVideoHack
 
 
-#### Смотреть в файл Solution.ipynb
+###### Решение тестового задания на хакатон MvideoHack
+
+
+#### Файл с решением — Solution.ipynb
